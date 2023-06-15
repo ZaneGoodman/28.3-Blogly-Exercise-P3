@@ -1,4 +1,4 @@
-from models import User, Post, db
+from models import User, Post, Tag, PostTag, db
 from app import app
 
 
@@ -44,11 +44,27 @@ fred = User(
     img_url="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
 )
 
-p1 = Post(title="New cat", content="This is sally the cat", user_id=1)
-p2 = Post(
-    title="Selling my car", content="I'm going on a 1 year camping trip!", user_id=2
+p1 = Post(
+    title="New cat",
+    content="This is sally the cat",
+    user_id=1,
+    tags=[Tag(tag_name="Love"), Tag(tag_name="Happy"), Tag(tag_name="WTF")],
 )
-p3 = Post(title="Uber", content="I'm starting to uber. Text me for details", user_id=3)
+
+p2 = Post(
+    title="Selling my car",
+    content="I'm going on a 1 year camping trip!",
+    user_id=2,
+    tags=[Tag(tag_name="Seriously"), Tag(tag_name="Angry"), Tag(tag_name="Meme")],
+)
+
+p3 = Post(
+    title="Uber",
+    content="I'm starting to uber. Text me for details",
+    user_id=3,
+    tags=[Tag(tag_name="Yes!"), Tag(tag_name="Yall")],
+)
+
 p4 = Post(
     title="Selling house", content="This is what I learned about home owning", user_id=4
 )

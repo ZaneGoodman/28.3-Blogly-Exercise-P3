@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, request, render_template, redirect, flash, session
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, Tag, PostTag
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -160,3 +160,32 @@ def delete_post(user_id, post_id):
     db.session.delete(post)
     db.session.commit()
     return redirect(f"/user-details/{user.id}")
+
+
+# routes for tags
+
+
+@app.route("/tags")
+def tag_list():
+    """Send user to list of tags"""
+    tags = Tag.query.all()
+
+    return render_template("tag_list.html", tags=tags)
+
+
+@app.route("/tags/add-tag")
+def add_tag():
+    return render_template("create_tag.html")
+
+
+@app.route("/tags/<int:tag_id>")
+def tag_details(tag_id):
+    tag = Tag.query.get(tag_id)
+    posts = tag.posts
+    return render_template("tag_details.html", tag=tag, posts=posts)
+
+
+# Next steps:
+
+# Make routes and html forms for "tag-details" edit and delete buttons
+# Make routes and html forms for "tag_list" add tag function
