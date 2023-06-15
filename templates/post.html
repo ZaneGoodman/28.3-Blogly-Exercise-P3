@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Post{% endblock %}
+
+{% block content %}
+
+<h1 class="form-group">{{post.title}}</h1>
+
+<p class="form-group">{{post.content}}</p>
+
+<blockquote class="form-group">By {{post.user.first_name}} {{post.user.last_name}}</blockquote>
+
+<a href="/user-details/{{post.user.id}}" class='btn btn-outline-primary form-group'>Back</a>
+<a href="/user-details/{{post.user.id}}/{{post.id}}/edit-post" class='btn btn-primary form-group'>Edit</a>
+<a href="/user-details/{{user.id}}/{{post.id}}/delete-post" class="btn btn-danger form-group">Delete</a>
+{% endblock %}

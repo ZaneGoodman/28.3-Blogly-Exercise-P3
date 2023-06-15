@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title%} Users {% endblock %}
+{% block content%}
+
+<h1 class="form-group">Users</h1>
+<div class="list-group col-sm-3 form-group">
+    {% for user in users %}
+    <a href="/user-details/{{user.id}}" class="list-group-item list-group-item-action">{{user.first_name}}
+        {{user.last_name}}</a>
+    {% endfor %}
+</div>
+<section>
+    <h2 class="form-group">Add a User</h2>
+    <form action="/" method="POST">
+        <div class="form-group col-sm-3">
+            <label for="first_name">First Name</label>
+            <input type="text" name="first_name" class="form-control">
+        </div>
+        <div class="form-group col-sm-3">
+            <label for="last_name">Last Name</label>
+            <input type="text" name="last_name" class="form-control">
+        </div>
+        <div class="form-group  col-sm-3">
+            <label for="img_url">Image URL</label>
+            <input type="url" name="img_url" class="form-control">
+        </div>
+        <button class='btn btn-primary form-group'>Add User</button>
+    </form>
+</section>
+{% endblock %}

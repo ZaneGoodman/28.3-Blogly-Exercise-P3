@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Edit Post{% endblock %}
+
+{% block content %}
+<section>
+    <h1 class="form-group">Edit Post</h1>
+    <form action="/user-details/{{post.user.id}}/{{post.id}}/edit-post" method="POST" class="form-group">
+        <div class="form-group col-sm-3">
+            <label for="title">Title</label>
+            <input type="text" name="title" class="form-control">
+        </div>
+        <div class="form-group col-sm-3">
+            <label for="content">Post Content</label>
+            <input type="text" name="content" class="form-control">
+        </div>
+
+        <button class='btn btn-primary form-group'>Edit</button>
+        <a href="/user-details/{{post.user.id}}/{{post.id}}" class="btn btn-outline-primary form-group">Cancel</a>
+    </form>
+</section>
+{% endblock %}
