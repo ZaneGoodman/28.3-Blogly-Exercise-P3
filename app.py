@@ -94,8 +94,8 @@ def delete_user(user_id):
 def add_post_form(user_id):
     """Sends user to form to add a post"""
     user = User.query.get(user_id)
-
-    return render_template("create_post.html", user=user)
+    tags = Tag.query.all()
+    return render_template("create_post.html", user=user, tags=tags)
 
 
 @app.route("/user-details/<int:user_id>/add-post", methods=["POST"])
@@ -104,7 +104,13 @@ def add_post(user_id):
 
     title = request.form["title"]
     content = request.form["content"]
+    selected_tag_ids = request.form.getlist("tag")
+
     new_post = Post(title=title, content=content, user_id=user_id)
+
+    for tag_id in selected_tag_ids:
+        tag = Tag.query.get(tag_id)
+        new_post.tags.append(tag)
 
     db.session.add(new_post)
     db.session.commit()
@@ -120,7 +126,9 @@ def user_post(user_id, post_id):
 
     post = Post.query.get(post_id)
 
-    return render_template("post.html", user=user, post=post)
+    tags = post.tags
+
+    return render_template("post.html", user=user, post=post, tags=tags)
 
 
 @app.route("/user-details/<int:user_id>/<int:post_id>/edit-post")
@@ -128,8 +136,8 @@ def edit_post(user_id, post_id):
     """Show edit form"""
     user = User.query.get(user_id)
     post = Post.query.get(post_id)
-
-    return render_template("edit_post.html", user=user, post=post)
+    tags = Tag.query.all()
+    return render_template("edit_post.html", user=user, post=post, tags=tags)
 
 
 @app.route("/user-details/<int:user_id>/<int:post_id>/edit-post", methods=["POST"])
@@ -141,9 +149,13 @@ def apply_edits_to_post(user_id, post_id):
 
     title = request.form["title"]
     content = request.form["content"]
+    selected_tag_ids = request.form.getlist("tag")
 
     post.title = title
     post.content = content
+    for tag_id in selected_tag_ids:
+        tag = Tag.query.get(tag_id)
+        post.tags.append(tag)
 
     db.session.add(post)
     db.session.commit()
@@ -178,6 +190,16 @@ def add_tag():
     return render_template("create_tag.html")
 
 
+@app.route("/tags/add-tag", methods=["POST"])
+def add_new_tag_to_db():
+    new_tag_name = request.form["tag-name"]
+    new_tag = Tag(tag_name=new_tag_name)
+    db.session.add(new_tag)
+    db.session.commit()
+
+    return redirect("/tags")
+
+
 @app.route("/tags/<int:tag_id>")
 def tag_details(tag_id):
     tag = Tag.query.get(tag_id)
@@ -185,7 +207,35 @@ def tag_details(tag_id):
     return render_template("tag_details.html", tag=tag, posts=posts)
 
 
+@app.route("/tags/<int:tag_id>/edit")
+def edit_tag(tag_id):
+    tag = Tag.query.get(tag_id)
+
+    return render_template("edit_tag.html", tag=tag)
+
+
+@app.route("/tags/<int:tag_id>/edit", methods=["POST"])
+def add_edits_to_tag_list(tag_id):
+    edited_tag_name = request.form["edit-tag"]
+    tag = Tag.query.get(tag_id)
+    tag.tag_name = edited_tag_name
+
+    db.session.add(tag)
+    db.session.commit()
+
+    return redirect("/tags")
+
+
+@app.route("/tags/<int:tag_id>/delete-tag")
+def delete_tag(tag_id):
+    tag = Tag.query.get(tag_id)
+
+    db.session.delete(tag)
+    db.session.commit()
+
+    return redirect("/tags")
+
+
 # Next steps:
 
 # Make routes and html forms for "tag-details" edit and delete buttons
-# Make routes and html forms for "tag_list" add tag function

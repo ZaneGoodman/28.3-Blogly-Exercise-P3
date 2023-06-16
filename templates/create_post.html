@@ -14,6 +14,17 @@
             <input type="text" name="content" class="form-control">
         </div>
 
+
+        {% for tag in tags %}
+        <div class="form-group input-group mb-2">
+
+            <input type="checkbox" name="tag" value="{{tag.tag_id}}" class="tag-label">
+            <label type="text" for="tag">{{tag.tag_name}}</label>
+
+        </div>
+        {% endfor %}
+
+
         <button class="btn btn-success form-group">Add Post</button>
         <a href="/user-details/{{user.id}}" class="btn btn-outline-primary form-group">Cancel</a>
     </form>

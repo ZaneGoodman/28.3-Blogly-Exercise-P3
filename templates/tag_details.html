@@ -10,10 +10,7 @@
         class="list-group-item list-group-item-action">{{post.title}}</a>
     {% endfor %}
 </div>
-<a href="" class="form-group btn btn-primary">Edit</a>
-<a href="" class='btn btn-primary form-group'>Delete</a>
+<a href="/tags/{{tag.tag_id}}/edit" class="form-group btn btn-primary">Edit</a>
+<a href="/tags/{{tag.tag_id}}/delete-tag" class='btn btn-danger  form-group'>Delete</a>
 <a href="/tags" class='btn btn-outline-primary form-group'>Back</a>
 {% endblock %}
-
-tag
-posts
