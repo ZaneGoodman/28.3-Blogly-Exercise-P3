@@ -1,6 +1,6 @@
 """Blogly application."""
 
-from flask import Flask, request, render_template, redirect, flash, session
+from flask import Flask, request, render_template, redirect
 from models import db, connect_db, User, Post, Tag, PostTag
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -107,7 +107,7 @@ def add_post(user_id):
     selected_tag_ids = request.form.getlist("tag")
 
     new_post = Post(title=title, content=content, user_id=user_id)
-
+    # Using the tag_id's retrieved from the checkboxed tags grab the full tag object and append to the post #
     for tag_id in selected_tag_ids:
         tag = Tag.query.get(tag_id)
         new_post.tags.append(tag)
@@ -153,6 +153,7 @@ def apply_edits_to_post(user_id, post_id):
 
     post.title = title
     post.content = content
+    # Using the tag_id's retrieved from the checkboxed tags grab the full tag object and append to the post #
     for tag_id in selected_tag_ids:
         tag = Tag.query.get(tag_id)
         post.tags.append(tag)
@@ -192,7 +193,7 @@ def add_tag():
 
 @app.route("/tags/add-tag", methods=["POST"])
 def add_new_tag_to_db():
-    new_tag_name = request.form["tag-name"]
+    new_tag_name = request.form["tag_name"]
     new_tag = Tag(tag_name=new_tag_name)
     db.session.add(new_tag)
     db.session.commit()
@@ -216,8 +217,8 @@ def edit_tag(tag_id):
 
 @app.route("/tags/<int:tag_id>/edit", methods=["POST"])
 def add_edits_to_tag_list(tag_id):
-    edited_tag_name = request.form["edit-tag"]
     tag = Tag.query.get(tag_id)
+    edited_tag_name = request.form["tag_name"]
     tag.tag_name = edited_tag_name
 
     db.session.add(tag)
@@ -234,8 +235,3 @@ def delete_tag(tag_id):
     db.session.commit()
 
     return redirect("/tags")
-
-
-# Next steps:
-
-# Make routes and html forms for "tag-details" edit and delete buttons
